@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 public class ReactiveOrderRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
-        System.out.println(">>> Rota reativa foi registrada");
 
         from("timer:gerador-pedidos?delay=5000&period=5000")
                 .routeId("emissao-pedido-reativo")
@@ -24,7 +23,7 @@ public class ReactiveOrderRoute extends RouteBuilder {
                 .process(exchange -> {
                     throw new RuntimeException("Erro durante o processamento!");
                 })
-                .to("http://localhost:8081/api/fornecedor")
+                .to("https://techdrops.free.beeceptor.com/api/fornecedor")
                 .to("kafka:pedidos-reativos?brokers=localhost:9092")
                 .to("log:pedido-reativo-finalizado");
     }
